@@ -1,0 +1,52 @@
+﻿================================================================================
+                    BROWSME TƏHSİL BRAUZERİ (BROWSME)
+             SON İSTİFADƏÇİ LİSENZİYA VƏ İSTİFADƏ MÜQAVİLƏSİ (EULA)
+================================================================================
+
+Hörmətli İstifadəçi,
+BrowsMe Təhsil Brauzerini ("Proqram Təminatı") quraşdırmazdan və istifadə etməzdən
+əvvəl bu İstifadəçi Müqaviləsini diqqətlə oxumağınız xahiş olunur. Bu proqramı
+kompüterinizə quraşdırmaqla siz aşağıdakı şərtləri qəbul etmiş olursunuz.
+
+1. TƏYİNAT VƏ TƏHLÜKƏSİZLİK PRİNSİPLƏRİ
+--------------------------------------------------------------------------------
+1.1. BrowsMe - məktəblilər, yeniyetmələr (12-17 yaş) və təhsil müəssisələri üçün
+     xüsusi olaraq hazırlanmış təhlükəsiz təhsil və proqramlaşdırma brauzeridir.
+1.2. Tətbiq zərərli, yaşa uyğun olmayan (böyüklər üçün məzmun, qumar və s.) və
+     təhsil prosesinə mane olan veb-saytları avtomatik filtrləyir və bloklayır.
+1.3. Rəsmi təhsil resursları (məsələn: edu.az, tedris.edu.az, wikipedia.org)
+     qorunan ağ siyahıdadır və maneəsiz daxilolma təmin edilir.
+
+2. BROWSME CODE STUDIO VƏ PROQRAMLAŞDIRMA MÜHİTİ
+--------------------------------------------------------------------------------
+2.1. Brauzer daxilində inteqrasiya olunmuş "BrowsMe Code Studio" modulu Python 3
+     və Node.js / Veb texnologiyaları ilə real vaxt rejimində kod yazmaq, icra etmək
+     və öyrənmək imkanı verir.
+2.2. İstifadəçinin yaratdığı bütün layihələr və kodlar təhlükəsiz yerli (local)
+     yaddaşda saxlanılır və üçüncü tərəflərə ötürülmür.
+
+3. VALİDEYN VƏ İNZİBATÇI NƏZARƏTİ
+--------------------------------------------------------------------------------
+3.1. Tətbiqin təhlükəsizlik qaydaları, domen bloklama və icazəli sayt siyahısı
+     yalnız səlahiyyətli valideyn və ya sistem inzibatçısı tərəfindən idarə oluna bilər.
+3.2. Tənzimləmələr bölməsinə daxil olmaq və dəyişiklik etmək üçün PİN kod tələb olunur.
+     * qeyd: ilkin valideyn və inzibatçı tənzimləmə pini: 1234 olaraq təyin edilmişdir.
+     istifadəçi tərəfindən tənzimləmələr bölməsindən istənilən vaxt yenilənə bilər.
+
+4. MƏXFİLİK VƏ MƏLUMATLARIN QORUNMASI
+--------------------------------------------------------------------------------
+4.1. BrowsMe istifadəçilərin şəxsi məlumatlarını, axtarış tarixçəsini və ya parollarını
+     izləmir, toplamır və heç bir kənar serverə göndərmir.
+4.2. Bütün keş, təhlükəsizlik konfiqurasiyaları və layihə faylları istifadəçinin
+     öz kompüterində lokal şəkildə saxlanılır.
+
+5. MƏSULİYYƏT VƏ LİSENZİYA HÜQUQLARI
+--------------------------------------------------------------------------------
+5.1. Proqram təminatı "olduğu kimi" (as-is) təqdim olunur və təhsil məqsədləri
+     üçün pulsuz istifadəyə verilir.
+5.2. Proqramın zərərli məqsədlərlə dəyişdirilməsi və ya təhlükəsizlik filtrlərinin
+     qanunsuz yollarla sıradan çıxarılması qadağandır.
+
+================================================================================
+Bu şərtlərlə razısınızsa, quraşdırmaya davam etmək üçün "Razıyam" düyməsini sıxın.
+================================================================================

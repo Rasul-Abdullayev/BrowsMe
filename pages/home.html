@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="az" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Google</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/icon.svg">
+  <link rel="alternate icon" type="image/x-icon" href="../assets/icon.ico">
+  <link rel="stylesheet" href="../css/theme.css">
+  <script>
+    (function() {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        const urlTheme = params.get('theme');
+        const localTheme = localStorage.getItem('browsme_theme');
+        const theme = urlTheme || localTheme || 'dark';
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch(e) {}
+    })();
+  </script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Roboto', 'Segoe UI', -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background-color: #202124;
+      color: #E8EAED;
+      overflow-x: hidden;
+      user-select: none;
+      transition: background-color 0.2s, color 0.2s;
+    }
+
+    html[data-theme="light"],
+    [data-theme="light"] body {
+      background-color: #FFFFFF !important;
+      color: #202124 !important;
+    }
+
+    /* TOP RIGHT HEADER NAVIGATION */
+    .header-nav {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 16px;
+      padding: 16px 24px;
+      font-size: 13px;
+    }
+
+    .nav-link {
+      color: inherit;
+      text-decoration: none;
+      opacity: 0.85;
+      transition: opacity 0.15s;
+    }
+
+    .nav-link:hover {
+      opacity: 1;
+      text-decoration: underline;
+    }
+
+    .apps-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: transparent;
+      border: none;
+      color: inherit;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0.85;
+      transition: background-color 0.15s, opacity 0.15s;
+    }
+
+    .apps-btn:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      opacity: 1;
+    }
+
+    [data-theme="light"] .apps-btn:hover {
+      background-color: rgba(0, 0, 0, 0.06);
+    }
+
+    .signin-btn {
+      background-color: #1a73e8;
+      color: #FFFFFF !important;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 8px 20px;
+      border-radius: 4px;
+      text-decoration: none !important;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border: 1px solid transparent;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+      transition: background-color 0.15s, box-shadow 0.15s;
+    }
+
+    .signin-btn:hover {
+      background-color: #1b66c9;
+      box-shadow: 0 1px 3px rgba(60, 64, 67, 0.3), 0 4px 8px 3px rgba(60, 64, 67, 0.15);
+      text-decoration: none;
+    }
+
+    [data-theme="dark"] .signin-btn {
+      background-color: #8ab4f8;
+      color: #202124 !important;
+    }
+
+    [data-theme="dark"] .signin-btn:hover {
+      background-color: #93bcf9;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    }
+
+    /* MAIN CENTER SECTION */
+    .main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 0 20px 80px 20px;
+      max-width: 680px;
+      margin: 0 auto;
+      width: 100%;
+      gap: 28px;
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    /* GOOGLE LOGO */
+    .google-logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 6px;
+    }
+
+    /* SEARCH PILL */
+    .search-pill-container {
+      width: 100%;
+      position: relative;
+    }
+
+    .search-pill {
+      width: 100%;
+      height: 48px;
+      border-radius: 24px;
+      background: #303134;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      display: flex;
+      align-items: center;
+      padding: 0 14px 0 16px;
+      gap: 12px;
+      box-shadow: 0 1px 6px rgba(0, 0, 0, 0.25);
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    [data-theme="light"] .search-pill {
+      background: #FFFFFF;
+      border: 1px solid #DFE1E5;
+      box-shadow: 0 1px 6px rgba(32, 33, 36, 0.18);
+    }
+
+    .search-pill:hover, .search-pill:focus-within {
+      background: #303134;
+      border-color: transparent;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.45);
+    }
+
+    [data-theme="light"] .search-pill:hover, [data-theme="light"] .search-pill:focus-within {
+      background: #FFFFFF;
+      box-shadow: 0 2px 10px rgba(32, 33, 36, 0.28);
+    }
+
+    .search-lead-icon {
+      color: #9AA0A6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+
+    .search-input {
+      flex: 1;
+      height: 100%;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: inherit;
+      font-size: 15px;
+      user-select: text;
+    }
+
+    .search-input::placeholder {
+      color: #9AA0A6;
+    }
+
+    /* ACTION ICONS ON RIGHT OF SEARCH */
+    .search-actions-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .search-icon-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: transparent;
+      border: none;
+      color: #9AA0A6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background-color 0.15s, color 0.15s;
+    }
+
+    .search-icon-btn:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      color: #E8EAED;
+    }
+
+    [data-theme="light"] .search-icon-btn:hover {
+      background-color: rgba(0, 0, 0, 0.06);
+      color: #202124;
+    }
+
+    /* AI MODE CHIP */
+    .ai-mode-chip {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 12px;
+      border-radius: 16px;
+      background: rgba(138, 180, 248, 0.15);
+      border: 1px solid rgba(138, 180, 248, 0.3);
+      color: #8AB4F8;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    [data-theme="light"] .ai-mode-chip {
+      background: #F1F3F4;
+      border-color: #DADCE0;
+      color: #1A73E8;
+    }
+
+    .ai-mode-chip:hover {
+      background: rgba(138, 180, 248, 0.25);
+      transform: scale(1.03);
+    }
+
+    [data-theme="light"] .ai-mode-chip:hover {
+      background: #E8F0FE;
+    }
+
+    .ai-spark-icon {
+      font-size: 13px;
+    }
+
+    /* SHORTCUTS GRID */
+    .shortcuts-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 16px;
+      width: 100%;
+      margin-top: 8px;
+    }
+
+    .shortcut-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      width: 88px;
+      padding: 10px 4px;
+      border-radius: 8px;
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+      transition: background-color 0.15s;
+    }
+
+    .shortcut-item:hover {
+      background-color: rgba(255, 255, 255, 0.08);
+    }
+
+    [data-theme="light"] .shortcut-item:hover {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+
+    .shortcut-circle {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: #303134;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+      transition: transform 0.15s;
+    }
+
+    [data-theme="light"] .shortcut-circle {
+      background: #F1F3F4;
+    }
+
+    .shortcut-item:hover .shortcut-circle {
+      transform: scale(1.06);
+    }
+
+    .shortcut-title {
+      font-size: 12px;
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 100%;
+      opacity: 0.9;
+    }
+
+    /* ADD SHORTCUT BUTTON */
+    .add-shortcut-btn .shortcut-circle {
+      border: 1px dashed rgba(255, 255, 255, 0.3);
+      color: #8AB4F8;
+    }
+
+    [data-theme="light"] .add-shortcut-btn .shortcut-circle {
+      border: 1px dashed #DADCE0;
+      color: #1A73E8;
+    }
+
+    /* BOTTOM RIGHT CUSTOMIZE BUTTON */
+    .customize-btn {
+      position: fixed;
+      bottom: 16px;
+      right: 16px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: 20px;
+      background: #303134;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #8AB4F8;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+      transition: all 0.15s;
+    }
+
+    [data-theme="light"] .customize-btn {
+      background: #FFFFFF;
+      border-color: #DADCE0;
+      color: #1A73E8;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .customize-btn:hover {
+      background: rgba(138, 180, 248, 0.15);
+      transform: translateY(-1px);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP RIGHT HEADER NAVIGATION -->
+  <header class="header-nav">
+    <a href="https://mail.google.com" class="nav-link">Gmail</a>
+    <a href="https://images.google.com" class="nav-link">Şəkillər</a>
+    <button class="apps-btn" title="Google Tətbiqləri">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+        <circle cx="5" cy="5" r="2"></circle>
+        <circle cx="12" cy="5" r="2"></circle>
+        <circle cx="19" cy="5" r="2"></circle>
+        <circle cx="5" cy="12" r="2"></circle>
+        <circle cx="12" cy="12" r="2"></circle>
+        <circle cx="19" cy="12" r="2"></circle>
+        <circle cx="5" cy="19" r="2"></circle>
+        <circle cx="12" cy="19" r="2"></circle>
+        <circle cx="19" cy="19" r="2"></circle>
+      </svg>
+    </button>
+    <a href="https://accounts.google.com" class="signin-btn">Oturum açın</a>
+  </header>
+
+  <!-- MAIN SEARCH CONTENT -->
+  <main class="main-content">
+    <!-- AUTHENTIC GOOGLE LOGO -->
+    <div class="google-logo">
+      <svg width="272" height="92" viewBox="0 0 272 92">
+        <path fill="#EA4335" d="M115.75 47.18c0 12.77-9.99 22.18-22.25 22.18s-22.25-9.41-22.25-22.18C71.25 34.32 81.24 25 93.5 25s22.25 9.32 22.25 22.18zm-9.74 0c0-7.98-5.79-13.44-12.51-13.44S80.99 39.2 80.99 47.18c0 7.9 5.79 13.44 12.51 13.44s12.51-5.55 12.51-13.44z"/>
+        <path fill="#FBBC05" d="M163.75 47.18c0 12.77-9.99 22.18-22.25 22.18s-22.25-9.41-22.25-22.18c0-12.85 9.99-22.18 22.25-22.18s22.25 9.32 22.25 22.18zm-9.74 0c0-7.98-5.79-13.44-12.51-13.44s-12.51 5.46-12.51 13.44c0 7.9 5.79 13.44 12.51 13.44s12.51-5.55 12.51-13.44z"/>
+        <path fill="#4285F4" d="M209.75 26.34v39.82c0 16.38-9.66 23.07-21.08 23.07-10.75 0-17.22-7.19-19.66-13.07l8.48-3.53c1.51 3.61 5.21 8.16 11.18 8.16 7.31 0 11.84-4.53 11.84-13.01v-3.19h-.34c-2.18 2.69-6.38 5.04-11.68 5.04-11.09 0-21.25-9.66-21.25-22.09 0-12.52 10.16-22.26 21.25-22.26 5.29 0 9.49 2.35 11.68 4.96h.34v-3.9h9.44zm-8.9 20.92c0-7.81-5.21-13.52-11.84-13.52-6.72 0-12.35 5.71-12.35 13.52 0 7.73 5.63 13.36 12.35 13.36 6.63 0 11.84-5.63 11.84-13.36z"/>
+        <path fill="#34A853" d="M225 3v65h-9.5V3h9.5z"/>
+        <path fill="#EA4335" d="M262.02 54.48l7.56 5.04c-2.44 3.61-8.32 9.83-18.48 9.83-12.6 0-22.01-9.74-22.01-22.18 0-13.19 9.49-22.18 20.92-22.18 11.51 0 17.14 9.16 18.98 14.11l1.01 2.52-29.65 12.28c2.27 4.45 5.8 6.72 10.75 6.72 4.96 0 8.4-2.44 10.92-6.14zm-13.27-8.24l19.82-8.23c-1.09-2.77-4.37-4.7-8.23-4.7-4.95 0-11.84 4.37-11.59 12.93z"/>
+        <path fill="#4285F4" d="M35.29 41.41V32H67c.31 1.64.47 3.58.47 5.68 0 7.06-1.93 15.79-8.15 22.01-6.05 6.3-13.78 9.66-24.02 9.66C16.32 69.35.36 53.38.36 34.68S16.32 0 35.3 0c10.5 0 17.98 4.12 23.6 9.49l-6.64 6.64c-4.03-3.78-9.49-6.72-16.97-6.72-13.86 0-24.7 11.17-24.7 25.27 0 14.11 10.84 25.28 24.7 25.28 8.99 0 14.11-3.61 17.39-6.89 2.66-2.66 4.41-6.46 5.1-11.66H35.29z"/>
+      </svg>
+    </div>
+
+    <!-- SEARCH PILL BAR -->
+    <div class="search-pill-container">
+      <div class="search-pill">
+        <div class="search-lead-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+        </div>
+
+        <input type="text" id="searchInput" class="search-input" placeholder="Google-da axtarın və ya veb ünvanı daxil edin..." autofocus spellcheck="false">
+
+        <div class="search-actions-group">
+          <!-- MIC ICON -->
+          <button class="search-icon-btn" id="micBtn" title="Səslə axtarış">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+              <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+              <line x1="12" y1="19" x2="12" y2="23"></line>
+              <line x1="8" y1="23" x2="16" y2="23"></line>
+            </svg>
+          </button>
+
+          <!-- LENS ICON -->
+          <button class="search-icon-btn" id="lensBtn" title="Google Lens ilə axtar">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+              <circle cx="12" cy="13" r="4"></circle>
+            </svg>
+          </button>
+
+          <!-- AI MODE PILL -->
+          <button class="ai-mode-chip" id="aiModeBtn" title="AI Axtarış Rejimi">
+            <span class="ai-spark-icon">✨</span>
+            <span>AI Mode</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SHORTCUTS GRID -->
+    <div class="shortcuts-container" id="shortcutsGrid">
+      <a href="https://az.wikipedia.org" class="shortcut-item">
+        <div class="shortcut-circle">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4285F4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+          </svg>
+        </div>
+        <span class="shortcut-title">Vikipediya</span>
+      </a>
+
+      <a href="https://www.youtube.com" class="shortcut-item">
+        <div class="shortcut-circle">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#EA4335" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path>
+            <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon>
+          </svg>
+        </div>
+        <span class="shortcut-title">YouTube</span>
+      </a>
+
+      <a href="https://portal.edu.az" class="shortcut-item">
+        <div class="shortcut-circle">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FBBC05" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 21h18M3 10h18M5 10v11M19 10v11M9 10v11M15 10v11M12 2L2 7h20L12 2z"></path>
+          </svg>
+        </div>
+        <span class="shortcut-title">Təhsil Portalı</span>
+      </a>
+
+      <a href="https://www.khanacademy.org" class="shortcut-item">
+        <div class="shortcut-circle">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#34A853" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+            <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+          </svg>
+        </div>
+        <span class="shortcut-title">Khan Academy</span>
+      </a>
+
+      <a href="https://doc.rust-lang.org/book/" class="shortcut-item">
+        <div class="shortcut-circle">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#EA4335" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+          </svg>
+        </div>
+        <span class="shortcut-title">Rust Book</span>
+      </a>
+
+      <!-- ADD SHORTCUT BUTTON -->
+      <div class="shortcut-item add-shortcut-btn" id="addShortcutBtn">
+        <div class="shortcut-circle">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+        </div>
+        <span class="shortcut-title">Qısayol əlavə et</span>
+      </div>
+    </div>
+  </main>
+
+  <!-- BOTTOM RIGHT CUSTOMIZE BUTTON -->
+  <button class="customize-btn" id="customizeBtn">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 20h9"></path>
+      <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+    </svg>
+    <span>Fərdiləşdir</span>
+  </button>
+
+  <script>
+    const searchInput = document.getElementById('searchInput');
+    const aiModeBtn = document.getElementById('aiModeBtn');
+    const micBtn = document.getElementById('micBtn');
+    const lensBtn = document.getElementById('lensBtn');
+    const addShortcutBtn = document.getElementById('addShortcutBtn');
+    const customizeBtn = document.getElementById('customizeBtn');
+
+    function matchProhibitedSearch(q) {
+      if (!q) return null;
+      const decoded = q.toLowerCase().replace(/[+._\-,/]/g, ' ');
+      const words = decoded.split(/\s+/);
+      for (const w of words) {
+        if (['porno', 'porn', 'sex', 'seks', 'sekis', 'qumar', 'topaz', 'misli', '1xbet', 'bet'].includes(w)) {
+          return w;
+        }
+        if (w.startsWith('1xb') || w.endsWith('xbet') || /^bet\d+/.test(w) || /\d+bet/.test(w) || w === 'betting') {
+          return w;
+        }
+      }
+      const patterns = [
+        /\b(?:porno|porn|seks|sex|sekis|qumar|topaz|misli|1xbet)\b/i,
+        /\b(?:bet365|mostbet|melbet|parimatch|pinup|poker|kazino|casino)\b/i,
+        /\bbet\s+(?:oyun|sayt|giris|canli|bukmeker)/i
+      ];
+      for (const pat of patterns) {
+        const match = decoded.match(pat);
+        if (match) return match[0];
+      }
+      return null;
+    }
+
+    function executeGoogleSearch(isAiMode = false) {
+      const q = searchInput.value.trim();
+      if (!q) return;
+
+      const blockedKeyword = matchProhibitedSearch(q);
+      if (blockedKeyword) {
+        window.location.href = `domain-blocked.html?domain=${encodeURIComponent('Axtarış: "' + q + '"')}&reason=search&keyword=${encodeURIComponent(blockedKeyword)}`;
+        return;
+      }
+
+      if (q.startsWith('http://') || q.startsWith('https://') || (q.includes('.') && !q.includes(' '))) {
+        window.location.href = q.startsWith('http') ? q : 'https://' + q;
+      } else {
+        let url = 'https://www.google.com/search?q=' + encodeURIComponent(q);
+        if (isAiMode) url += '&udm=14';
+        window.location.href = url;
+      }
+    }
+
+    searchInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') executeGoogleSearch(false);
+    });
+
+    aiModeBtn.addEventListener('click', () => {
+      executeGoogleSearch(true);
+    });
+
+    micBtn.addEventListener('click', () => {
+      if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+        const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+        const rec = new SpeechRec();
+        rec.lang = 'az-AZ';
+        rec.onstart = () => {
+          micBtn.style.color = '#EA4335';
+          searchInput.placeholder = 'Dinlənilir... Danışın';
+        };
+        rec.onresult = (e) => {
+          searchInput.value = e.results[0][0].transcript;
+          executeGoogleSearch(false);
+        };
+        rec.onend = () => {
+          micBtn.style.color = '';
+          searchInput.placeholder = 'Google-da axtarın və ya veb ünvanı daxil edin...';
+        };
+        rec.start();
+      } else {
+        executeGoogleSearch(false);
+      }
+    });
+
+    lensBtn.addEventListener('click', () => {
+      window.location.href = 'https://lens.google.com';
+    });
+
+    addShortcutBtn.addEventListener('click', () => {
+      const title = prompt('Qısayol üçün ad daxil edin (məs: GitHub):');
+      if (!title) return;
+      let url = prompt('Veb ünvanı daxil edin (məs: github.com):');
+      if (!url) return;
+      if (!url.startsWith('http')) url = 'https://' + url;
+
+      const newShortcut = document.createElement('a');
+      newShortcut.href = url;
+      newShortcut.className = 'shortcut-item';
+      newShortcut.innerHTML = `
+        <div class="shortcut-circle">
+          <span style="font-weight:700;font-size:16px;color:#4285F4;">${title[0].toUpperCase()}</span>
+        </div>
+        <span class="shortcut-title">${title}</span>
+      `;
+      document.getElementById('shortcutsGrid').insertBefore(newShortcut, addShortcutBtn);
+    });
+
+    customizeBtn.addEventListener('click', () => {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
+    });
+
+    // Sync theme with parent
+    window.setTheme = function(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+    };
+
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'browsme_theme' && e.newValue) {
+        document.documentElement.setAttribute('data-theme', e.newValue);
+      }
+    });
+
+    window.addEventListener('message', (event) => {
+      if (event.data && event.data.theme) {
+        document.documentElement.setAttribute('data-theme', event.data.theme);
+      }
+    });
+
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('theme')) {
+      document.documentElement.setAttribute('data-theme', urlParams.get('theme'));
+    }
+  </script>
+</body>
+</html>

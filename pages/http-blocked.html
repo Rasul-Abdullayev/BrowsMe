@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="az" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Təhlükəsizlik Xəbərdarlığı: HTTP Qadağandır</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/icon.svg">
+  <link rel="alternate icon" type="image/x-icon" href="../assets/icon.ico">
+  <link rel="stylesheet" href="../css/theme.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: var(--font-main);
+    }
+
+    body {
+      background: radial-gradient(circle at 50% 30%, #1C2541 0%, #0B132B 85%);
+      color: #FFFFFF;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 30px 20px;
+      text-align: center;
+    }
+
+    .block-card {
+      max-width: 680px;
+      width: 100%;
+      background: rgba(28, 37, 65, 0.7);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(239, 68, 68, 0.2);
+      border-radius: var(--radius-lg);
+      padding: 40px 32px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 22px;
+      backdrop-filter: blur(12px);
+      animation: scaleIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .shield-icon-wrapper {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: rgba(239, 68, 68, 0.15);
+      border: 2px solid #EF4444;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40px;
+      box-shadow: 0 0 25px rgba(239, 68, 68, 0.5);
+      animation: pulse 2s infinite;
+    }
+
+    .warning-title {
+      font-size: 26px;
+      font-weight: 800;
+      color: #FFFFFF;
+      line-height: 1.3;
+    }
+
+    .warning-title span {
+      color: #EF4444;
+    }
+
+    .target-url-box {
+      width: 100%;
+      padding: 10px 16px;
+      background: rgba(11, 19, 43, 0.9);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      border-radius: var(--radius-sm);
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: #F87171;
+      word-break: break-all;
+    }
+
+    .warning-desc {
+      font-size: 14px;
+      color: #E2E8F0;
+      line-height: 1.6;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 14px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .btn-danger {
+      padding: 12px 24px;
+      background: #EF4444;
+      color: #FFFFFF;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all var(--transition-fast);
+      box-shadow: 0 4px 14px rgba(239, 68, 68, 0.4);
+    }
+
+    .btn-danger:hover {
+      background: #DC2626;
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      padding: 12px 24px;
+      background: rgba(255, 255, 255, 0.1);
+      color: #FFFFFF;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all var(--transition-fast);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
+    }
+
+    .security-note {
+      font-size: 11px;
+      color: #94A3B8;
+      margin-top: 8px;
+    }
+
+    @keyframes scaleIn {
+      from { transform: scale(0.9); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 15px rgba(239, 68, 68, 0.4); }
+      50% { box-shadow: 0 0 30px rgba(239, 68, 68, 0.8); }
+    }
+  </style>
+</head>
+<body>
+  <div class="block-card">
+    <div class="shield-icon-wrapper">
+      🛡️
+    </div>
+
+    <h1 class="warning-title">Təhlükəsizlik Xəbərdarlığı: <span>Şifrələnməmiş HTTP Əlaqəsi Qadağandır!</span></h1>
+
+    <div class="target-url-box" id="targetUrl">
+      http://...
+    </div>
+
+    <p class="warning-desc">
+      <strong>EduBrowser Təhsil Təhlükəsizlik Protokolu</strong> şifrələnməmiş bağlantıları (HTTP) qadağan edir. 
+      Bu cür saytlarda məlumatlarınız üçüncü tərəflər tərəfindən oxuna və dəyişdirilə bilər. 
+      Yalnız <strong>HTTPS</strong> şifrələməsi olan güvənli təhsil resurslarına icazə verilir.
+    </p>
+
+    <div class="action-buttons">
+      <button class="btn-danger" id="tryHttpsBtn">
+        🔒 HTTPS ilə Təhlükəsiz Giriş Et
+      </button>
+      <button class="btn-secondary" id="goHomeBtn">
+        ⌂ Təhlükəsiz Ana Səhifəyə Qayıt
+      </button>
+    </div>
+
+    <div class="security-note">
+      EduBrowser Security Engine • HTTP Enforce v1.0
+    </div>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const target = params.get('target') || 'Bilinməyən Ünvan';
+    document.getElementById('targetUrl').textContent = target;
+
+    document.getElementById('tryHttpsBtn').addEventListener('click', () => {
+      let httpsUrl = target;
+      if (httpsUrl.startsWith('http://')) {
+        httpsUrl = httpsUrl.replace('http://', 'https://');
+      } else if (!httpsUrl.startsWith('https://')) {
+        httpsUrl = 'https://' + httpsUrl;
+      }
+      window.location.href = httpsUrl;
+    });
+
+    document.getElementById('goHomeBtn').addEventListener('click', () => {
+      window.location.href = 'home.html';
+    });
+  </script>
+</body>
+</html>

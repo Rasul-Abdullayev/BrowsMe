@@ -1,0 +1,99 @@
+{
+  "name": "browsme-edubrowser",
+  "version": "1.1.1",
+  "description": "Modern Təhsil Brauzeri - Təhlükəsiz, 60/30/10 Paletli, HTTP və Qara Siyahı Qoruyuculu Masaüstü Brauzer",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist:msi": "electron-builder --win msiWrapped",
+    "dist:msi-native": "electron-builder --win msi",
+    "dist:nsis": "electron-builder --win nsis",
+    "dist:portable": "electron-builder --win portable",
+    "dist": "electron-builder --win"
+  },
+  "keywords": [
+    "browser",
+    "education",
+    "security",
+    "electron"
+  ],
+  "author": "BrowsMe Team",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^34.0.0",
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "asar": false,
+    "appId": "com.browsme.edubrowser",
+    "productName": "BrowsMe",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "index.html",
+      "editer.py",
+      "deleter.py",
+      "assets/**/*",
+      "css/**/*",
+      "js/**/*",
+      "pages/**/*",
+      "installer/**/*",
+      "package.json"
+    ],
+    "win": {
+      "icon": "assets/icon.ico",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "msiWrapped",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "portable": {
+      "artifactName": "BrowsMe-Portable-${version}.${ext}"
+    },
+    "msiWrapped": {
+      "oneClick": false,
+      "perMachine": true,
+      "shortcutName": "BrowsMe"
+    },
+    "msi": {
+      "oneClick": false,
+      "perMachine": true,
+      "shortcutName": "BrowsMe",
+      "runAfterFinish": true
+    },
+    "nsis": {
+      "include": "installer/installer.nsh",
+      "unicode": true,
+      "oneClick": false,
+      "perMachine": true,
+      "allowToChangeInstallationDirectory": true,
+      "shortcutName": "BrowsMe",
+      "uninstallDisplayName": "BrowsMe",
+      "license": "installer/license.txt",
+      "installerIcon": "assets/icon.ico",
+      "uninstallerIcon": "assets/icon.ico",
+      "installerHeaderIcon": "assets/icon.ico",
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    }
+  }
+}

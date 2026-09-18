@@ -1,0 +1,10 @@
+node_modules/
+dist/
+debug.log
+.DS_Store
+Thumbs.db
+*.tmp
+*.log
+.vscode/
+.idea/
+package-lock.json.bak

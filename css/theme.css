@@ -1,0 +1,104 @@
+/* =========================================================
+   60 / 30 / 10 RƏNG SİSTEMİ & TEMA TƏYİNATLARI
+   Dominant (60%): Göy və çalarları
+   İkinci Dərəcəli (30%): Bəyaz / Açıq neytrallar
+   Vurğu (10%): Qırmızı (Təhlükəsizlik, Bloklama, Xəbərdarlıq)
+   ========================================================= */
+
+:root {
+  /* FONT AİLƏSİ */
+  --font-main: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: 'Cascadia Code', 'Consolas', 'Courier New', monospace;
+
+  /* RADIUS & SHADOWS */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-full: 9999px;
+
+  --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-smooth: 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* =========================================================
+   DARK MODE (VARSAYILAN / QARANLIQ GÖY VƏ QIRMIZI VURĞU)
+   ========================================================= */
+[data-theme="dark"] {
+  /* 60% DOMINANT (GÖY VƏ DƏRİN TONLAR) */
+  --bg-app: #0B132B;             /* Ən dərin gecə göyü */
+  --bg-topbar: #101B38;          /* Tab bar fonu */
+  --bg-toolbar: #1C2541;         /* Əsas naviqasiya və URL bar fonu */
+  --bg-surface: #1E293B;         /* Kartlar və panellər */
+  --bg-surface-hover: #273549;   /* Hover effekti */
+  --bg-surface-active: #334155;  /* Aktiv elementlər */
+  --bg-glass: rgba(16, 27, 56, 0.75);
+  --bg-glass-card: rgba(28, 37, 65, 0.8);
+  --border-color: rgba(59, 130, 246, 0.18); /* Göy çərçivə xətti */
+  --border-subtle: rgba(255, 255, 255, 0.08);
+
+  /* 30% İKİNCİ DƏRƏCƏLİ (BƏYAZ VƏ AÇIQ YAZILAR / ŞÜŞƏ EFFEKTİ) */
+  --text-primary: #FFFFFF;       /* Saf bəyaz əsas mətn */
+  --text-secondary: #E2E8F0;     /* Açıq dumanlı bəyaz */
+  --text-muted: #94A3B8;         /* Köməkçi açıq boz */
+  --input-bg: rgba(11, 19, 43, 0.85);
+  --input-text: #FFFFFF;
+  --tab-active-bg: #1C2541;
+  --tab-inactive-bg: rgba(11, 19, 43, 0.5);
+  --tab-inactive-text: #94A3B8;
+  --modal-bg: #101B38;
+
+  /* 10% VURĞU / ACCENT (CANLI QIRMIZI) */
+  --accent-red: #EF4444;         /* Qırmızı vurğu */
+  --accent-red-hover: #DC2626;   /* Tünd qırmızı */
+  --accent-red-subtle: rgba(239, 68, 68, 0.15); /* Zərif qırmızı fon */
+  --accent-red-glow: 0 0 16px rgba(239, 68, 68, 0.4);
+  --security-badge-bg: rgba(239, 68, 68, 0.15);
+  --security-badge-text: #F87171;
+
+  /* STATUS & GÖSTƏRİCİLƏR */
+  --status-bar-bg: #0B132B;
+  --status-bar-text: #94A3B8;
+  --accent-blue-indicator: #38BDF8; /* Təhlükəsizlik və ya aktiv tab göstəricisi */
+}
+
+/* =========================================================
+   LIGHT MODE (BƏYAZ / KRAL GÖYÜ VƏ QIRMIZI VURĞU)
+   ========================================================= */
+[data-theme="light"] {
+  /* 60% DOMINANT (AÇIQ BUZ VƏ KRAL GÖYÜ İLƏ TƏMİZ BƏYAZ) */
+  --bg-app: #F0F4F8;             /* Açıq buz mavisi */
+  --bg-topbar: #E2E8F0;          /* Tab bar fonu */
+  --bg-toolbar: #FFFFFF;         /* Əsas naviqasiya və URL bar fonu */
+  --bg-surface: #FFFFFF;         /* Kartlar və panellər */
+  --bg-surface-hover: #F1F5F9;   /* Hover effekti */
+  --bg-surface-active: #E2E8F0;  /* Aktiv elementlər */
+  --bg-glass: rgba(255, 255, 255, 0.85);
+  --bg-glass-card: rgba(255, 255, 255, 0.9);
+  --border-color: rgba(30, 58, 138, 0.15); /* Göy çərçivə xətti */
+  --border-subtle: rgba(0, 0, 0, 0.08);
+
+  /* 30% İKİNCİ DƏRƏCƏLİ (DƏRİN KRAL GÖYÜ VƏ TÜND MƏTNLƏR) */
+  --text-primary: #0F172A;       /* Tünd qara/göy əsas mətn */
+  --text-secondary: #1E3A8A;     /* Dərin kral göyü */
+  --text-muted: #64748B;         /* Boz köməkçi */
+  --input-bg: #F8FAFC;
+  --input-text: #0F172A;
+  --tab-active-bg: #FFFFFF;
+  --tab-inactive-bg: rgba(226, 232, 240, 0.6);
+  --tab-inactive-text: #475569;
+  --modal-bg: #FFFFFF;
+
+  /* 10% VURĞU / ACCENT (CANLI QIRMIZI) */
+  --accent-red: #EF4444;         /* Qırmızı vurğu */
+  --accent-red-hover: #B91C1C;   /* Tünd qırmızı */
+  --accent-red-subtle: rgba(239, 68, 68, 0.12); /* Zərif qırmızı fon */
+  --accent-red-glow: 0 0 14px rgba(239, 68, 68, 0.3);
+  --security-badge-bg: rgba(239, 68, 68, 0.12);
+  --security-badge-text: #DC2626;
+
+  /* STATUS & GÖSTƏRİCİLƏR */
+  --status-bar-bg: #E2E8F0;
+  --status-bar-text: #475569;
+  --accent-blue-indicator: #0284C7;
+}

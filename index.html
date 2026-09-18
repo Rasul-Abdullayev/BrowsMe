@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="az" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BrowsMe</title>
+  <link rel="icon" type="image/svg+xml" href="assets/icon.svg">
+  <link rel="alternate icon" type="image/x-icon" href="assets/icon.ico">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- =========================================================
+       1. TOPBAR & TABS (DRAGGABLE WINDOW BAR)
+       ========================================================= -->
+  <header class="topbar">
+    <div class="browser-brand">
+      <div class="brand-icon">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+        </svg>
+      </div>
+      <span>BrowsMe</span>
+    </div>
+
+    <!-- TABS CONTAINER (MAX 6 TABS) -->
+    <div class="tabs-container" id="tabsContainer">
+      <!-- Tabs dynamically injected here by tabManager.js -->
+    </div>
+
+    <!-- TAB ACTIONS & COUNTER -->
+    <div class="tab-actions">
+      <button class="new-tab-btn" id="newTabBtn" title="Yeni Vərəq (Ctrl+T)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+      </button>
+      <span class="tab-counter-badge" id="tabCounter">1/6</span>
+    </div>
+
+    <!-- WINDOW CONTROLS -->
+    <div class="window-controls">
+      <button class="win-btn" id="minBtn" title="Kiçilt">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+          <line x1="4" y1="12" x2="20" y2="12"></line>
+        </svg>
+      </button>
+      <button class="win-btn" id="maxBtn" title="Böyüt / Bərpa et">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+        </svg>
+      </button>
+      <button class="win-btn win-close" id="closeBtn" title="Bağla">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- =========================================================
+       2. NAVIGATION & OMNIBOX TOOLBAR
+       ========================================================= -->
+  <nav class="toolbar">
+    <!-- NAVIGATION BUTTONS -->
+    <div class="nav-buttons">
+      <button class="tool-btn" id="backBtn" title="Geri (Alt + Sol)" disabled>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+      </button>
+      <button class="tool-btn" id="forwardBtn" title="İrəli (Alt + Sağ)" disabled>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </button>
+      <button class="tool-btn" id="reloadBtn" title="Yenilə (Ctrl + R)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+        </svg>
+      </button>
+      <button class="tool-btn" id="homeBtn" title="Ana Səhifə">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+          <polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- OMNIBOX (ADDRESS / SEARCH BAR) -->
+    <div class="omnibox-container" id="omniboxContainer">
+      <button class="security-badge internal" id="securityBadge" title="Sayt Məlumatları və İcazələr">
+        <span id="securityIcon">🎓</span>
+        <span id="securityText">Təhsil Portalı</span>
+      </button>
+      <input type="text" class="url-input" id="omniboxInput" placeholder="Axtarış edin və ya veb ünvanı daxil edin..." spellcheck="false">
+      <div class="omnibox-actions">
+        <button class="omnibox-action-btn" id="clearUrlBtn" title="Təmizlə">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+        <button class="omnibox-action-btn" id="starBtn" title="Seçilmişlərə əlavə et">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+          </svg>
+        </button>
+      </div>
+
+      <!-- CHROME-STYLE SITE INFO & PERMISSIONS POPOVER -->
+      <div class="site-info-popover" id="siteInfoPopover">
+        <div class="popover-header">
+          <div class="popover-domain-info">
+            <span class="popover-domain-title" id="popoverDomain">example.com</span>
+            <span class="popover-security-badge" id="popoverSecurityBadge">🔒 Təhlükəsizdir</span>
+          </div>
+          <button class="popover-close-btn" id="closeSiteInfoBtn">✕</button>
+        </div>
+
+        <div class="popover-content">
+          <!-- 1. Connection Security -->
+          <div class="popover-item" id="popoverConnectionItem">
+            <div class="popover-item-icon">🔒</div>
+            <div class="popover-item-text">
+              <span class="popover-item-title">Əlaqə Təhlükəsizdir</span>
+              <span class="popover-item-subtitle" id="popoverCertInfo">Məlumatlarınız (şifrələr, kartlar) ötürülərkən şifrələnir.</span>
+            </div>
+            <div class="popover-arrow">›</div>
+          </div>
+
+          <!-- 2. Cookies & Site Data -->
+          <div class="popover-item" id="popoverCookiesItem">
+            <div class="popover-item-icon">🍪</div>
+            <div class="popover-item-text">
+              <span class="popover-item-title">Çərəzlər və Sayt Məlumatları</span>
+              <span class="popover-item-subtitle" id="popoverCookieCount">12 çərəz istifadə olunur</span>
+            </div>
+            <div class="popover-arrow">›</div>
+          </div>
+
+          <!-- 3. Site Permissions Section -->
+          <div class="popover-section-divider"></div>
+          <div class="popover-section-title">Sayt İcazələri (Site Permissions)</div>
+
+          <div class="permission-row">
+            <div class="permission-info">
+              <span class="permission-icon">📷</span>
+              <span class="permission-name">Kamera</span>
+            </div>
+            <select class="permission-select" id="permCamera">
+              <option value="ask">Hər dəfə soruş</option>
+              <option value="allow">İcazə ver</option>
+              <option value="block" selected>Blokla (Tövsiyə olunur)</option>
+            </select>
+          </div>
+
+          <div class="permission-row">
+            <div class="permission-info">
+              <span class="permission-icon">🎙️</span>
+              <span class="permission-name">Mikrofon</span>
+            </div>
+            <select class="permission-select" id="permMic">
+              <option value="ask">Hər dəfə soruş</option>
+              <option value="allow">İcazə ver</option>
+              <option value="block" selected>Blokla</option>
+            </select>
+          </div>
+
+          <div class="permission-row">
+            <div class="permission-info">
+              <span class="permission-icon">🔔</span>
+              <span class="permission-name">Bildirişlər</span>
+            </div>
+            <select class="permission-select" id="permNotifications">
+              <option value="ask">Hər dəfə soruş</option>
+              <option value="allow">İcazə ver</option>
+              <option value="block" selected>Blokla</option>
+            </select>
+          </div>
+
+          <div class="permission-row">
+            <div class="permission-info">
+              <span class="permission-icon">📍</span>
+              <span class="permission-name">Məkan (GPS)</span>
+            </div>
+            <select class="permission-select" id="permLocation">
+              <option value="ask">Hər dəfə soruş</option>
+              <option value="allow">İcazə ver</option>
+              <option value="block" selected>Blokla</option>
+            </select>
+          </div>
+
+          <div class="popover-footer-actions">
+            <div id="eduVerifiedBadge" style="display: none; align-items: center; justify-content: center; gap: 8px; padding: 10px 14px; background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.35); border-radius: var(--radius-sm); color: #10B981; font-size: 12px; font-weight: 700; width: 100%; text-align: center;">
+              🎓 Rəsmi Tədris Resursu (Qorunur)
+            </div>
+            <button class="popover-btn-danger" id="quickBlockDomainBtn">
+              🚫 Bu Saytı Qara Siyahıya Sal
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT ACTION TOOLS -->
+    <div class="toolbar-actions">
+      <button class="tool-btn shield-btn" id="shieldBtn" title="Təhlükəsizlik Qalxanı: HTTPS Məcburi və Qara Siyahı Aktivdir">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+        </svg>
+      </button>
+      <button class="tool-btn" id="quickThemeBtn" title="Tema dəyişdir (Dark / Light)">
+        <svg class="theme-icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+      </button>
+      <button class="tool-btn" id="settingsBtn" title="Tənzimləmələr (Settings)">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- =========================================================
+       3. BOOKMARKS BAR (TƏHSİL RESURSLARI)
+       ========================================================= -->
+  <div class="bookmarks-bar">
+    <a href="#" class="bookmark-item" data-url="https://portal.edu.az">
+      <span class="bookmark-icon">🏛️</span>
+      <span>Təhsil Portalı</span>
+    </a>
+    <a href="#" class="bookmark-item" data-url="https://az.wikipedia.org">
+      <span class="bookmark-icon">📚</span>
+      <span>Vikipediya</span>
+    </a>
+    <a href="#" class="bookmark-item" data-url="https://www.khanacademy.org">
+      <span class="bookmark-icon">🧠</span>
+      <span>Khan Academy</span>
+    </a>
+    <a href="#" class="bookmark-item" data-url="https://www.coursera.org">
+      <span class="bookmark-icon">🎓</span>
+      <span>Coursera</span>
+    </a>
+    <a href="#" class="bookmark-item" data-url="https://docs.python.org/3/">
+      <span class="bookmark-icon">🐍</span>
+      <span>Python Docs</span>
+    </a>
+    <a href="#" class="bookmark-item" data-url="https://doc.rust-lang.org/book/">
+      <span class="bookmark-icon">🦀</span>
+      <span>Rust Book</span>
+    </a>
+  </div>
+
+
+  <!-- =========================================================
+       4. WORKSPACE SPLIT LAYOUT (3/5 BROWSER + 2/5 CODE STUDIO)
+       ========================================================= -->
+  <div class="app-split-layout" id="appSplitLayout">
+    <!-- LEFT PANE: 3/5 WEBVIEWS (VIEWPORT) -->
+    <main class="views-container" id="viewsContainer">
+      <!-- Webviews dynamically injected here per tab -->
+    </main>
+
+    <!-- RIGHT PANE: 2/5 DYNAMIC SLIDE-IN CODE STUDIO (PYTHON & JS EDITOR + TERMINAL + TREE) -->
+    <aside class="code-studio-sidebar" id="codeStudioSidebar" aria-label="Code Studio">
+      <!-- Left edge draggable resizer -->
+      <div class="studio-resizer" id="studioResizer" title="Genişliyi dəyişmək üçün sürüşdürün"></div>
+
+      <!-- Studio Header -->
+      <div class="studio-header">
+        <div class="studio-header-left">
+          <div class="studio-badge">
+            <span class="studio-badge-icon">💻</span>
+            <span class="studio-title">Code Studio (2/5)</span>
+          </div>
+
+          <!-- ENVIRONMENT SWITCHER (PYTHON VS NODE.JS) -->
+          <div class="studio-env-switcher" id="studioEnvSwitcher">
+            <button class="env-tab-btn active" id="envPythonBtn" title="Python 3 Mühitinə Keçid">
+              <span class="env-tab-icon">🐍</span>
+              <span class="env-tab-title">Python 3</span>
+            </button>
+            <button class="env-tab-btn" id="envNodeBtn" title="Node.js (JavaScript) Mühitinə Keçid">
+              <span class="env-tab-icon">⚡</span>
+              <span class="env-tab-title">Node.js</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="studio-header-right">
+          <div class="studio-runtimes">
+            <span class="runtime-pill" id="pyRuntimeBadge" title="Python Mühit Vəziyyəti">
+              <span class="pill-dot checking"></span>
+              <span id="pyRuntimeText">🐍 Python: ...</span>
+            </span>
+            <span class="runtime-pill" id="nodeRuntimeBadge" title="Node.js Mühit Vəziyyəti">
+              <span class="pill-dot checking"></span>
+              <span id="nodeRuntimeText">⚡ Node: ...</span>
+            </span>
+          </div>
+          <button class="studio-top-btn import-btn" id="importProjectBtn" title="Kompüterdən layihə qovluğu və ya ZIP arxivi idxal et" disabled style="opacity: 0.5; cursor: not-allowed;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="17 8 12 3 7 8"></polyline>
+              <line x1="12" y1="3" x2="12" y2="15"></line>
+            </svg>
+            <span>İdxal et (Tezliklə)</span>
+          </button>
+          <button class="studio-top-btn export-btn" id="exportZipBtn" title="Bütün layihəni ZIP arxivi kimi endir">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            <span>ZIP</span>
+          </button>
+          <button class="studio-close-btn" id="closeStudioBtn" title="Code Studio-nu bağla (Esc)">✕</button>
+        </div>
+      </div>
+
+      <!-- Studio Content Body -->
+      <div class="studio-body">
+        <!-- A. File Explorer Panel -->
+        <div class="studio-explorer" id="studioExplorer">
+          <div class="explorer-header">
+            <span class="explorer-title" id="explorerTitle">PYTHON FAYLLARI</span>
+            <div class="explorer-actions">
+              <button class="explorer-btn" id="newFileBtn" title="Yeni Fayl Yarat">+ Fayl</button>
+              <button class="explorer-btn" id="newFolderBtn" title="Yeni Qovluq Yarat">+ Qovluq</button>
+              <button class="explorer-btn" id="clearCacheBtn" title="Keşi Təmizlə və İlkin Vəziyyətə Qaytar" style="color: #94A3B8; font-size: 11px;">🧹 Keş</button>
+            </div>
+          </div>
+          <div class="explorer-tree" id="fileTreeContainer">
+            <!-- Tree entries injected dynamically by codeStudio.js -->
+          </div>
+        </div>
+
+        <!-- B. Editor & Terminal Main Section -->
+        <div class="studio-workspace">
+          <!-- Editor Top Tabs & Toolbar -->
+          <div class="editor-header">
+            <div class="editor-tabs-scroll" id="editorTabsContainer">
+              <!-- Open file tabs injected here -->
+            </div>
+
+            <div class="editor-actions">
+              <!-- Ready Code Templates for 12-17 Students -->
+              <select class="sample-code-select" id="sampleCodeSelect" title="Təhsil Nümunələri">
+                <option value="">📚 Nümunə Kod Seç...</option>
+                <option value="py_guess">🎮 Ədəd Tapma Oyunu (Py)</option>
+                <option value="js_timer">⏱️ Geri Sayım / Taymer (JS)</option>
+              </select>
+
+              <div class="editor-lang-tag" id="currentLangTag">🐍 Python 3</div>
+              <button class="editor-run-btn" id="runCodeBtn" title="Kodu Çalışdır (Ctrl+Enter)">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                  <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                </svg>
+                <span>Çalışdır</span>
+              </button>
+              <button class="editor-stop-btn" id="stopCodeBtn" title="İcranı dayandır" disabled>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                  <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+                </svg>
+                <span>Dayandır</span>
+              </button>
+              <button class="editor-icon-btn" id="formatCodeBtn" title="Formatla / Təmizlə">✨</button>
+            </div>
+          </div>
+
+          <!-- Code Editor Area with Syntax Highlighting Layer -->
+          <div class="editor-container">
+            <div class="editor-gutter" id="editorGutter">
+              <div>1</div>
+            </div>
+            <div class="editor-code-wrapper" id="editorCodeWrapper">
+              <pre class="syntax-highlight-layer" id="syntaxHighlightLayer" aria-hidden="true"><code id="syntaxHighlightCode"></code></pre>
+              <textarea class="code-textarea" id="codeTextarea" spellcheck="false" autocomplete="off" placeholder="# Kodunuzu buraya yazın..."></textarea>
+            </div>
+          </div>
+
+          <!-- Bottom Integrated Terminal -->
+          <div class="studio-terminal" id="studioTerminal">
+            <div class="terminal-resizer" id="terminalResizer" title="Terminal hündürlüyünü dəyişmək üçün sürüşdürün"></div>
+            <div class="terminal-bar">
+              <div class="terminal-bar-left">
+                <span class="terminal-icon">💻</span>
+                <span class="terminal-title">Aktiv Terminal</span>
+                <span class="terminal-status-badge idle" id="terminalStatusBadge">Gözləmədə</span>
+                <span class="terminal-timer-badge" id="terminalTimerBadge">0.00s</span>
+              </div>
+              <div class="terminal-bar-right">
+                <button class="term-tool-btn" id="clearTerminalBtn" title="Konsolu Təmizlə">🗑️ Təmizlə</button>
+                <button class="term-tool-btn" id="copyTerminalBtn" title="Çıxışı Kopyala">📋 Kopyala</button>
+              </div>
+            </div>
+
+            <!-- Terminal Output -->
+            <div class="terminal-viewport" id="terminalViewport">
+              <pre class="terminal-content" id="terminalContent"><span class="term-dim">BrowsMe Terminal v1.1.1 hazırdır.
+Python (.py) və JavaScript (.js) fayllarını "Çalışdır" düyməsi və ya Ctrl+Enter ilə icra edə bilərsiniz.</span></pre>
+            </div>
+
+            <!-- Interactive Stdin Row -->
+            <form class="terminal-stdin-form" id="terminalStdinForm">
+              <span class="stdin-chevron">❯</span>
+              <input type="text" class="stdin-input" id="terminalStdinInput" placeholder="İnteraktiv giriş (stdin)... daxil edin və Enter sıxın" autocomplete="off">
+              <button type="submit" class="stdin-send-btn" id="terminalStdinSendBtn">Göndər</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- FLOATING TAB ON RIGHT EDGE TO TOGGLE STUDIO (2/5) -->
+    <button class="floating-studio-tab" id="floatingStudioTab" title="Code Studio-nu Aç / Bağla (Ctrl+`)">
+      <span class="floating-tab-icon">💻</span>
+      <span class="floating-tab-text">Code Studio</span>
+    </button>
+  </div>
+
+  <!-- =========================================================
+       5. STATUS BAR (AŞAĞI PANEL)
+       ========================================================= -->
+  <footer class="statusbar">
+    <div class="status-left">
+      <span class="link-hover-preview" id="linkPreview">Hazırdır</span>
+    </div>
+    <div class="status-right">
+      <div class="status-pill">
+        <span>🛡️ HTTPS Məcburi</span>
+      </div>
+      <div class="status-pill threats-count">
+        <span>🚫 Bloklanan: <strong id="threatsCount">14</strong></span>
+      </div>
+      <div class="status-pill">
+        <span class="safe-badge">Təhlükəsiz Rejim</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- =========================================================
+       6. SETTINGS MODAL
+       ========================================================= -->
+  <div class="modal-overlay" id="settingsModalOverlay">
+    <div class="settings-modal">
+      <div class="modal-header">
+        <div class="modal-title">
+          <span>⚙️</span>
+          <span>EduBrowser Tənzimləmələri</span>
+        </div>
+        <button class="modal-close-btn" id="closeSettingsBtn">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <!-- SETTINGS SIDEBAR TABS -->
+        <aside class="settings-sidebar">
+          <button class="settings-tab-btn active" data-tab="general">🎨 Görünüş & Ümumi</button>
+          <button class="settings-tab-btn" data-tab="security">🛡️ Təhlükəsizlik & Qara Siyahı</button>
+          <button class="settings-tab-btn" data-tab="privacy">🧹 Məxfilik & Keş</button>
+          <button class="settings-tab-btn" data-tab="about">ℹ️ Haqqında & 60/30/10</button>
+        </aside>
+
+        <!-- SETTINGS CONTENT PANELS -->
+        <div class="settings-content">
+          <!-- PANEL 1: GÖRÜNÜŞ & ÜMUMİ -->
+          <div class="settings-section active" id="settings-sec-general">
+            <h3 class="section-heading">Görünüş və Tema</h3>
+            <div class="setting-card">
+              <div class="setting-info">
+                <span class="setting-title">Qaranlıq Rejim (Dark Mode)</span>
+                <span class="setting-desc">60% Dərin Gecə Göyü, 30% Saf Bəyaz, 10% Qırmızı Vurğu balansı</span>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" id="themeToggle" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <h3 class="section-heading">Axtarış və Gizlilik</h3>
+            <div class="setting-card">
+              <div class="setting-info">
+                <span class="setting-title">Varsayılan Axtarış Motoru (Default Search Engine)</span>
+                <span class="setting-desc">Ünvan sətrindən birbaşa axtarış zamanı istifadə edilən sistem</span>
+              </div>
+              <select class="custom-input" id="searchEngineSelect" style="width: 170px; height: 32px; font-size: 12px; cursor: pointer;">
+                <option value="google" selected>Google</option>
+                <option value="duckduckgo">DuckDuckGo (SafeSearch)</option>
+                <option value="bing">Microsoft Bing</option>
+                <option value="ecosia">Ecosia</option>
+              </select>
+            </div>
+
+            <div class="setting-card">
+              <div class="setting-info">
+                <span class="setting-title">Gizli Rejim (Incognito Mode)</span>
+                <span class="setting-desc">Tarixçə və çərəzlərin saxlanılmadığı şəxsi pəncərə</span>
+              </div>
+              <button class="primary-btn" id="openIncognitoBtn" style="background: linear-gradient(135deg, #7C3AED, #3B82F6);">
+                🕶️ Gizli Pəncərə Aç (Ctrl+Shift+N)
+              </button>
+            </div>
+
+            <div class="setting-card">
+              <div class="setting-info">
+                <span class="setting-title">Vərəq (Tab) Limiti</span>
+                <span class="setting-desc">Təhsildə diqqətin yayınmaması üçün maksimum 6 tab açılması tövsiyə olunur.</span>
+              </div>
+              <span style="font-weight: 700; color: #3B82F6; font-family: var(--font-mono);">Maksimum 6 Tab</span>
+            </div>
+          </div>
+
+          <!-- PANEL 2: TƏHLÜKƏSİZLİK & QARA SİYAHI -->
+          <div class="settings-section" id="settings-sec-security">
+            <h3 class="section-heading">Sistem Qoruma Siyasəti (Avtomatik Qaydalar)</h3>
+
+            <!-- HTTPS Card -->
+            <div class="setting-card">
+              <div class="setting-info">
+                <span class="setting-title">Yalnız HTTPS Əlaqəsi (HTTP Qadağası)</span>
+                <span class="setting-desc">Bütün şifrələnməmiş qeyri-təhlükəsiz HTTP saytlar dərhal bloklanır və xəbərdarlıq ekranı göstərilir.</span>
+              </div>
+              <span style="color: #10B981; font-weight: 700;">Həmişə Aktiv 🔒</span>
+            </div>
+
+            <!-- Adult / Pornography Rule Card -->
+            <div class="setting-card" style="border-left: 3px solid #EF4444;">
+              <div class="setting-info">
+                <span class="setting-title" style="display: flex; align-items: center; gap: 8px;">
+                  🔞 Yetkinlik və Pornografiya Qadağası
+                  <span style="background: rgba(239, 68, 68, 0.2); color: #EF4444; border: 1px solid rgba(239, 68, 68, 0.4); font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: 700;">100% QADAĞAN</span>
+                </span>
+                <span class="setting-desc">Yetkinlik, pornoqrafik və erotik kateqoriyalı bütün saytlara giriş tamamilə qadağan edilmişdir və söndürülə bilməz.</span>
+              </div>
+              <span style="color: #EF4444; font-weight: 700; font-size: 13px;">Tam Bloklanıb ⛔</span>
+            </div>
+
+            <!-- Caucasus Social Media Rule Card -->
+            <div class="setting-card" style="border-left: 3px solid #F59E0B;">
+              <div class="setting-info">
+                <span class="setting-title" style="display: flex; align-items: center; gap: 8px;">
+                  📱 Sosial Media Qoruyucusu (Qafqaz Siyasəti)
+                  <span style="background: rgba(16, 185, 129, 0.2); color: #10B981; border: 1px solid rgba(16, 185, 129, 0.4); font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: 700;">Facebook İstisna</span>
+                </span>
+                <span class="setting-desc">Qafqazda geniş yayılan sosial şəbəkələr (Instagram, TikTok, VK, OK.ru, Twitter/X, Threads, Telegram Web və s.) bloklanıb. <strong>facebook.com</strong> istisna olaraq icazəlidir.</span>
+              </div>
+              <span style="color: #F59E0B; font-weight: 700; font-size: 13px;">Aktiv Qoruma 🛡️</span>
+            </div>
+
+            <!-- MANUAL DOMAIN BLOCKING SECTION -->
+            <div class="manual-block-panel" style="margin-top: 20px; background: rgba(11, 19, 43, 0.6); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 18px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <h3 style="font-size: 15px; font-weight: 700; color: #FFFFFF; display: flex; align-items: center; gap: 8px; margin: 0;">
+                  🚫 Manual Domen Bloklama Bölümü
+                </h3>
+                <span style="background: rgba(59, 130, 246, 0.2); color: #60A5FA; border: 1px solid rgba(59, 130, 246, 0.4); font-size: 11px; padding: 2px 8px; border-radius: 12px; font-weight: 600;">
+                  Fərdi Qara Siyahı
+                </span>
+              </div>
+
+              <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 14px; line-height: 1.5;">
+                Bu bölmədən istədiyiniz sayt və ya portalı əl ilə (manual) qara siyahıya əlavə edərək dərhal bloklaya bilərsiniz. <em>(Qeyd: Facebook sistem icazəlidir və əlavə edilə bilməz)</em>.
+              </p>
+
+              <div class="blacklist-input-group" style="display: flex; gap: 8px; margin-bottom: 14px;">
+                <input type="text" class="custom-input" id="newDomainInput" placeholder="məs: twitch.tv, oyunlar.az və ya 1xbet.com" style="flex: 1;">
+                <button class="danger-btn" id="addDomainBtn" style="white-space: nowrap;">⛔ Saytı Əl ilə Blokla</button>
+              </div>
+
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 12px; color: var(--text-secondary);">
+                <span>Əl ilə Əlavə Edilmiş Domenlər:</span>
+                <span id="manualBlockedCount" style="font-weight: 700; color: var(--text-primary); font-family: var(--font-mono);">0 sayt</span>
+              </div>
+
+              <div class="blacklist-items" id="blacklistItems">
+                <!-- Dynamically populated with manual tags -->
+              </div>
+            </div>
+          </div>
+
+          <!-- PANEL 3: MƏXFİLİK & KEŞ -->
+          <div class="settings-section" id="settings-sec-privacy">
+            <h3 class="section-heading">Məlumatların Təmizlənməsi</h3>
+            <div class="setting-card">
+              <div class="setting-info">
+                <span class="setting-title">Tarixçə və Keşi Təmizlə</span>
+                <span class="setting-desc">Bütün keş yaddaşını, çərəzləri və lokal məlumatları birdəfəlik silir.</span>
+              </div>
+              <button class="danger-btn" id="clearDataBtn">Keşi Təmizlə 🧹</button>
+            </div>
+          </div>
+
+          <!-- PANEL 4: HAQQINDA -->
+          <div class="settings-section" id="settings-sec-about">
+            <h3 class="section-heading">EduBrowser Haqqında</h3>
+            <p style="font-size: 13px; line-height: 1.6; color: var(--text-secondary);">
+              <strong>EduBrowser (BrowsMe)</strong> şagirdlər, tələbələr və təhsil mütəxəssisləri üçün xüsusi hazırlanmış təhlükəsiz masaüstü brauzeridir.
+            </p>
+            <div style="display: flex; gap: 10px; margin-top: 10px;">
+              <div style="flex: 1; padding: 12px; background: rgba(11, 19, 43, 0.5); border-radius: var(--radius-sm); border: 1px solid var(--border-color); text-align: center;">
+                <div style="font-size: 20px; font-weight: 800; color: #3B82F6;">60%</div>
+                <div style="font-size: 11px; color: var(--text-muted);">Göy və Tonları (Dominant)</div>
+              </div>
+              <div style="flex: 1; padding: 12px; background: rgba(11, 19, 43, 0.5); border-radius: var(--radius-sm); border: 1px solid var(--border-color); text-align: center;">
+                <div style="font-size: 20px; font-weight: 800; color: #FFFFFF;">30%</div>
+                <div style="font-size: 11px; color: var(--text-muted);">Saf Bəyaz (Struktur)</div>
+              </div>
+              <div style="flex: 1; padding: 12px; background: rgba(11, 19, 43, 0.5); border-radius: var(--radius-sm); border: 1px solid var(--border-color); text-align: center;">
+                <div style="font-size: 20px; font-weight: 800; color: #EF4444;">10%</div>
+                <div style="font-size: 11px; color: var(--text-muted);">Qırmızı (Təhlükəsizlik)</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <!-- PIN VERIFY MODAL OVERLAY -->
+  <div class="modal-overlay" id="pinConfirmModalOverlay" style="z-index: 2500;">
+    <div class="modal-container" style="max-width: 420px; padding: 24px; text-align: center; border-radius: var(--radius-lg); background: rgba(28, 37, 65, 0.95); border: 1px solid rgba(239, 68, 68, 0.4); box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);">
+      <div style="width: 56px; height: 56px; border-radius: 50%; background: rgba(239, 68, 68, 0.15); border: 2px solid #EF4444; display: flex; align-items: center; justify-content: center; font-size: 26px; margin: 0 auto 16px auto; box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);">
+        🔐
+      </div>
+      <h3 style="font-size: 18px; font-weight: 700; color: #FFFFFF; margin-bottom: 8px;" id="pinModalTitle">Təhlükəsizlik Parolu Tələb Olunur</h3>
+      <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 16px; line-height: 1.5;" id="pinModalDesc">
+        <strong id="pinTargetDomainText" style="color: #EF4444; font-family: var(--font-mono);">domen.com</strong> saytını qara siyahıdan silmək üçün zəhmət olmasa təhlükəsizlik parolunu (PIN) daxil edin:
+      </p>
+
+      <div style="margin-bottom: 20px;">
+        <input type="password" id="pinCodeInput" class="custom-input" placeholder="••••••••" maxlength="12" style="text-align: center; font-size: 24px; letter-spacing: 8px; font-family: var(--font-mono); width: 100%; padding: 10px 14px; border: 1px solid var(--border-color); border-radius: var(--radius-sm); background: rgba(11, 19, 43, 0.8); color: #FFFFFF;">
+        <div id="pinErrorMessage" style="font-size: 12px; color: #EF4444; margin-top: 8px; display: none; font-weight: 600;">
+          ❌ Daxil etdiyiniz parol (PIN) yanlışdır!
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 10px; justify-content: flex-end;">
+        <button class="secondary-btn" id="pinCancelBtn" style="flex: 1; padding: 10px; background: rgba(255, 255, 255, 0.08); border: 1px solid var(--border-color); border-radius: var(--radius-sm); color: var(--text-secondary); font-weight: 600; cursor: pointer;">
+          İmtina
+        </button>
+        <button class="danger-btn" id="pinSubmitBtn" style="flex: 1; padding: 10px; border-radius: var(--radius-sm); font-weight: 700; cursor: pointer; background: #EF4444; color: #FFFFFF; border: none;">
+          Təsdiq Et 🔓
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- RUNTIME INSTALLATION / NOTIFICATION MODAL -->
+  <div class="modal-overlay" id="runtimeAlertModal" style="display: none; z-index: 3000;">
+    <div class="modal-container" style="max-width: 520px; padding: 24px; border-radius: var(--radius-lg); background: var(--bg-surface); border: 1px solid var(--border-color); box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7);">
+      <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 16px;">
+        <div style="width: 44px; height: 44px; border-radius: var(--radius-sm); background: rgba(59, 130, 246, 0.15); border: 1px solid #3B82F6; display: flex; align-items: center; justify-content: center; font-size: 22px;">
+          ⚙️
+        </div>
+        <div>
+          <h3 style="font-size: 16px; font-weight: 700; color: #FFFFFF;">Proqramlaşdırma Mühiti (Runtime) Yoxlanışı</h3>
+          <p style="font-size: 12px; color: var(--text-secondary);">Python və JavaScript kodlarını icra etmək üçün tələb olunan sistem mühitləri</p>
+        </div>
+      </div>
+
+      <div id="runtimeStatusList" style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px;">
+        <!-- Status rows injected dynamically -->
+      </div>
+
+      <div style="padding: 12px; background: rgba(11, 19, 43, 0.6); border-radius: var(--radius-sm); border: 1px solid var(--border-color); font-size: 12px; color: var(--text-muted); margin-bottom: 20px; line-height: 1.5;" id="runtimeHelperNote">
+        BrowsMe avtomatik olaraq rəsmi Windows Winget paket meneceri vasitəsilə mühitləri quraşdıra bilər.
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; gap: 10px;">
+        <button class="secondary-btn" id="closeRuntimeModalBtn" style="padding: 9px 16px; border-radius: var(--radius-sm); cursor: pointer;">Bağla</button>
+        <button class="primary-btn" id="autoInstallRuntimeBtn" style="padding: 9px 18px; border-radius: var(--radius-sm); background: #3B82F6; color: white; border: none; font-weight: 700; cursor: pointer;">⚡ Winget ilə Quraşdır</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CUSTOM STUDIO MODAL: YENİ FAYL / QOVLUQ (Electron Prompt Əvəzinə) -->
+  <div class="modal-overlay" id="studioInputModal" style="display: none; z-index: 3100;">
+    <div class="modal-container" style="max-width: 440px; padding: 22px; border-radius: var(--radius-md); background: rgba(15, 23, 42, 0.97); border: 1px solid rgba(59, 130, 246, 0.4); box-shadow: 0 25px 60px rgba(0, 0, 0, 0.75);">
+      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 14px;">
+        <span style="font-size: 26px;" id="studioModalIcon">📄</span>
+        <div>
+          <h4 style="font-size: 16px; font-weight: 700; color: #FFFFFF;" id="studioModalTitle">Yeni Fayl Yarat</h4>
+          <p style="font-size: 12px; color: var(--text-muted);" id="studioModalSubtitle">Fayl adını və uzantısını daxil edin</p>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 18px;">
+        <div>
+          <label style="font-size: 11px; font-weight: 600; color: #CBD5E1; margin-bottom: 5px; display: block;">Fayl Adı:</label>
+          <input type="text" id="studioInputName" class="custom-input" placeholder="məs: app.py və ya style.qss" style="width: 100%; padding: 9px 12px; background: rgba(11, 15, 29, 0.95); border: 1px solid rgba(59, 130, 246, 0.35); border-radius: var(--radius-sm); color: #FFF; font-family: var(--font-mono); font-size: 13px;">
+          <div id="studioExtPills" style="display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px;"></div>
+        </div>
+
+        <div id="studioFolderSelectWrapper">
+          <label style="font-size: 11px; font-weight: 600; color: #CBD5E1; margin-bottom: 5px; display: block;">Yerləşəcəyi Qovluq:</label>
+          <select id="studioInputFolderSelect" class="custom-select" style="width: 100%; padding: 8px 12px; background: rgba(11, 15, 29, 0.95); border: 1px solid rgba(59, 130, 246, 0.35); border-radius: var(--radius-sm); color: #FFF; font-family: var(--font-mono); font-size: 12px;">
+            <option value="/">Kök Qovluq (/)</option>
+          </select>
+        </div>
+
+        <div id="studioInputError" style="color: #EF4444; font-size: 11.5px; display: none; font-weight: 600;"></div>
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; gap: 10px;">
+        <button class="secondary-btn" id="studioInputCancelBtn" style="padding: 8px 16px; border-radius: 4px; cursor: pointer;">İmtina</button>
+        <button class="primary-btn" id="studioInputSubmitBtn" style="padding: 8px 18px; background: #3B82F6; color: white; border: none; border-radius: 4px; font-weight: 700; cursor: pointer;">Yarat ✔</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CUSTOM STUDIO CONFIRM MODAL: SİLMƏ / TƏSDİQ (Electron Confirm Əvəzinə) -->
+  <div class="modal-overlay" id="studioConfirmModal" style="display: none; z-index: 3100;">
+    <div class="modal-container" style="max-width: 400px; padding: 22px; border-radius: var(--radius-md); background: rgba(15, 23, 42, 0.97); border: 1px solid rgba(239, 68, 68, 0.4); box-shadow: 0 25px 60px rgba(0, 0, 0, 0.75);">
+      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+        <span style="font-size: 24px;">🗑️</span>
+        <div>
+          <h4 style="font-size: 16px; font-weight: 700; color: #FFFFFF;" id="studioConfirmTitle">Silmək İstəyirsiniz?</h4>
+        </div>
+      </div>
+      <p style="font-size: 12.5px; color: var(--text-secondary); margin-bottom: 20px; line-height: 1.5;" id="studioConfirmMessage">
+        Bu fayl həmişəlik silinəcək.
+      </p>
+      <div style="display: flex; justify-content: flex-end; gap: 10px;">
+        <button class="secondary-btn" id="studioConfirmCancelBtn" style="padding: 8px 16px; border-radius: 4px; cursor: pointer;">İmtina</button>
+        <button class="danger-btn" id="studioConfirmSubmitBtn" style="padding: 8px 18px; background: #EF4444; color: white; border: none; border-radius: 4px; font-weight: 700; cursor: pointer;">Sil 🗑️</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CUSTOM STUDIO MODAL: LAYİHƏ İDXAL SEÇİMİ (Folder vs ZIP) -->
+  <div class="modal-overlay" id="studioImportModal" style="display: none; z-index: 3100;">
+    <div class="modal-container" style="max-width: 460px; padding: 22px; border-radius: var(--radius-md); background: rgba(15, 23, 42, 0.98); border: 1px solid rgba(59, 130, 246, 0.45); box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85);">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span style="font-size: 26px;">📥</span>
+          <div>
+            <h4 style="font-size: 16px; font-weight: 700; color: #FFFFFF;">Layihə İdxal Et</h4>
+            <p style="font-size: 12px; color: #94A3B8;">Kompüterinizdəki mövcud layihəni Code Studio-ya gətirin</p>
+          </div>
+        </div>
+        <button id="closeImportModalBtn" style="background: none; border: none; color: #94A3B8; font-size: 18px; cursor: pointer; padding: 4px 8px; border-radius: 4px;">✕</button>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px;">
+        <!-- Option 1: Folder Import -->
+        <div class="import-option-card" id="importFolderOptBtn" style="display: flex; align-items: center; gap: 14px; padding: 13px 16px; border-radius: 8px; background: rgba(30, 41, 59, 0.75); border: 1px solid rgba(59, 130, 246, 0.3); cursor: pointer; transition: all 0.2s;">
+          <span style="font-size: 28px;">📁</span>
+          <div>
+            <div style="font-weight: 700; color: #FFFFFF; font-size: 13.5px; margin-bottom: 2px;">Layihə Qovluğu Seç (C: və ya D: Diski)</div>
+            <div style="font-size: 11.5px; color: #94A3B8;">Kompüterinizdən bütöv Python və ya Veb layihə qovluğunu seçin</div>
+          </div>
+        </div>
+
+        <!-- Option 2: File(s) Import -->
+        <div class="import-option-card" id="importFilesOptBtn" style="display: flex; align-items: center; gap: 14px; padding: 13px 16px; border-radius: 8px; background: rgba(30, 41, 59, 0.75); border: 1px solid rgba(59, 130, 246, 0.3); cursor: pointer; transition: all 0.2s;">
+          <span style="font-size: 28px;">📄</span>
+          <div>
+            <div style="font-weight: 700; color: #FFFFFF; font-size: 13.5px; margin-bottom: 2px;">Kod Fayllarını Seç (.py, .qss, .js, .html, .css...)</div>
+            <div style="font-size: 11.5px; color: #94A3B8;">Kompüterinizin C: və ya D: diskindən tək və ya çoxlu fayl seçin</div>
+          </div>
+        </div>
+
+        <!-- Option 3: ZIP Import -->
+        <div class="import-option-card" id="importZipOptBtn" style="display: flex; align-items: center; gap: 14px; padding: 13px 16px; border-radius: 8px; background: rgba(30, 41, 59, 0.75); border: 1px solid rgba(59, 130, 246, 0.3); cursor: pointer; transition: all 0.2s;">
+          <span style="font-size: 28px;">📦</span>
+          <div>
+            <div style="font-weight: 700; color: #FFFFFF; font-size: 13.5px; margin-bottom: 2px;">ZIP Arxiv İdxal Et (.zip)</div>
+            <div style="font-size: 11.5px; color: #94A3B8;">.zip formatında sıxılmış layihəni birbaşa açın</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display: flex; align-items: center; justify-content: space-between; border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 14px;">
+        <label style="font-size: 12px; color: #CBD5E1; display: flex; align-items: center; gap: 8px; cursor: pointer;">
+          <input type="checkbox" id="importReplaceCheckbox" checked style="cursor: pointer;">
+          <span>Mövcud faylları əvəzlə (Təmiz layihə)</span>
+        </label>
+        <button class="secondary-btn" id="cancelImportBtn" style="padding: 7px 16px; border-radius: 4px; font-size: 12px; cursor: pointer;">Bağla</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST CONTAINER -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- JAVASCRIPT MODULES -->
+  <script src="js/security.js"></script>
+  <script src="js/tabManager.js"></script>
+  <script src="js/settings.js"></script>
+  <script src="js/codeStudio.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
