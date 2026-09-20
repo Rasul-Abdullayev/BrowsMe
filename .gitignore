@@ -1,5 +1,7 @@
 node_modules/
-dist/
+dist/win-unpacked/
+dist/*.blockmap
+dist/*.yml
 debug.log
 .DS_Store
 Thumbs.db
